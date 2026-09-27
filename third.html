@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techfest 2026 | IIT Bombay - Asia's Largest Science & Technology Festival</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Orbitron:wght@400;600;800;900&family=Space+Grotesk:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#030712',
+                            darker: '#010308',
+                            cyan: '#00f3ff',
+                            magenta: '#ff0055',
+                            violet: '#8b5cf6',
+                            green: '#10b981',
+                            gold: '#f59e0b',
+                            card: 'rgba(10, 15, 30, 0.75)'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite alternate',
+                        'scanline': 'scanline 6s linear infinite',
+                        'glitch': 'glitch 1s infinite',
+                        'float': 'float 5s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%': { filter: 'drop-shadow(0 0 10px rgba(0,243,255,0.4))' },
+                            '100%': { filter: 'drop-shadow(0 0 25px rgba(0,243,255,0.9)) drop-shadow(0 0 15px rgba(255,0,85,0.6))' }
+                        },
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(1000%)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* Glitch Text Effect */
+        .glitch-text {
+            position: relative;
+            display: inline-block;
+        }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            clip: rect(0, 0, 0, 0);
+        }
+        .glitch-text:hover::before {
+            left: -2px;
+            text-shadow: 2px 0 #ff0055;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-1 0.8s infinite linear alternate-reverse;
+        }
+        .glitch-text:hover::after {
+            left: 2px;
+            text-shadow: -2px 0 #00f3ff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim-2 0.8s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(10px, 9999px, 30px, 0); }
+            50% { clip: rect(50px, 9999px, 80px, 0); }
+            100% { clip: rect(20px, 9999px, 60px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(60px, 9999px, 90px, 0); }
+            50% { clip: rect(10px, 9999px, 40px, 0); }
+            100% { clip: rect(40px, 9999px, 70px, 0); }
+        }
+
+        /* Custom Cyber Cursor */
+        #cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #00f3ff;
+            box-shadow: 0 0 10px #00f3ff, 0 0 20px #00f3ff;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.05s ease;
+        }
+        #cursor-ring {
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid rgba(0, 243, 255, 0.6);
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, border-color 0.2s;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        /* Holographic Parallax Glass Cards */
+        .holo-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(5, 10, 25, 0.9) 100%);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: transform 0.15s ease-out, border-color 0.3s, box-shadow 0.3s;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .holo-card:hover {
+            border-color: rgba(0, 243, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.25), inset 0 0 15px rgba(0, 243, 255, 0.1);
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0.3)
+            );
+            background-size: 100% 4px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #00f3ff; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff0055; }
+
+        .neon-border-cyan { box-shadow: 0 0 15px rgba(0,243,255,0.4), inset 0 0 15px rgba(0,243,255,0.2); }
+        .neon-border-magenta { box-shadow: 0 0 15px rgba(255,0,85,0.4), inset 0 0 15px rgba(255,0,85,0.2); }
+    </style>
+</head>
+<body class="relative bg-cyber-bg text-gray-100 selection:bg-cyber-cyan selection:text-black">
+
+    <!-- Custom Cyber Cursor -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- Background Canvas Stack: Interactive Particles & Matrix Rain -->
+    <canvas id="particle-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+    <div class="fixed inset-0 scanlines pointer-events-none z-10 opacity-30"></div>
+
+    <!-- HUD Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-xl bg-cyber-bg/85 border-b border-cyan-500/20">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" onclick="playSound('click')" class="flex items-center gap-3 group">
+                <div class="relative w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-500 via-fuchsia-600 to-amber-400 p-[2px] transition-transform group-hover:scale-110">
+                    <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="cpu" class="w-6 h-6 text-cyan-400 group-hover:rotate-45 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-orbitron text-2xl font-black tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-300 to-cyan-500 glitch-text" data-text="TECHFEST">TECHFEST</span>
+                    <span class="text-[10px] block font-mono text-cyan-400 tracking-widest -mt-1 uppercase">IIT BOMBAY • 2026</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-8 text-xs font-mono font-bold tracking-widest uppercase">
+                <a href="#about" onclick="playSound('hover')" class="hover:text-cyan-400 transition-colors flex items-center gap-1 group">
+                    <span class="text-cyan-500 font-normal">[01]</span> ABOUT
+                </a>
+                <a href="#terminal-section" onclick="playSound('hover')" class="hover:text-cyan-400 transition-colors flex items-center gap-1 group">
+                    <span class="text-cyan-500 font-normal">[02]</span> TERMINAL
+                </a>
+                <a href="#competitions" onclick="playSound('hover')" class="hover:text-cyan-400 transition-colors flex items-center gap-1 group">
+                    <span class="text-cyan-500 font-normal">[03]</span> COMPETITIONS
+                </a>
+                <a href="#speakers" onclick="playSound('hover')" class="hover:text-cyan-400 transition-colors flex items-center gap-1 group">
+                    <span class="text-cyan-500 font-normal">[04]</span> KEYNOTES
+                </a>
+                <a href="#schedule" onclick="playSound('hover')" class="hover:text-cyan-400 transition-colors flex items-center gap-1 group">
+                    <span class="text-cyan-500 font-normal">[05]</span> TIMELINE
+                </a>
+            </nav>
+
+            <!-- Control Buttons & Registration -->
+            <div class="flex items-center gap-3">
+                <!-- Sound Toggle -->
+                <button id="sound-btn" onclick="toggleSound()" class="p-2.5 rounded-lg border border-cyan-500/30 bg-slate-900/80 text-cyan-400 hover:border-cyan-400 transition-all flex items-center gap-2 font-mono text-xs" title="Toggle Sci-Fi SFX">
+                    <i data-lucide="volume-2" id="sound-icon" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline" id="sound-status">SFX: ON</span>
+                </button>
+
+                <!-- Matrix Rain Toggle -->
+                <button onclick="toggleMatrixRain()" class="p-2.5 rounded-lg border border-fuchsia-500/30 bg-slate-900/80 text-fuchsia-400 hover:border-fuchsia-400 transition-all font-mono text-xs" title="Toggle Matrix Effect">
+                    <i data-lucide="binary" class="w-4 h-4"></i>
+                </button>
+
+                <!-- Pass Generator Modal Button -->
+                <button onclick="openPassModal()" class="px-5 py-2.5 rounded-lg font-mono text-xs font-bold text-black bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-emerald-400 hover:opacity-90 transition-all shadow-[0_0_20px_rgba(0,243,255,0.4)] flex items-center gap-2">
+                    <i data-lucide="ticket" class="w-4 h-4"></i> GET VIP PASS
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Stream -->
+    <main class="relative z-20 pt-20">
+
+        <!-- HERO SECTION -->
+        <section id="about" class="min-h-[92vh] flex items-center justify-center relative px-6 py-12">
+            <div class="max-w-5xl mx-auto text-center relative z-10">
+                
+                <!-- Status Badge -->
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-cyan-500/40 bg-slate-900/80 text-cyan-300 font-mono text-xs uppercase tracking-widest mb-8 animate-float">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                    <span>30th EDITION • DECEMBER 16-18, 2026</span>
+                    <span class="text-gray-500">|</span>
+                    <span class="text-fuchsia-400 font-bold">IIT BOMBAY</span>
+                </div>
+
+                <!-- Main Cyber Title -->
+                <h1 class="font-orbitron text-5xl sm:text-7xl lg:text-9xl font-black tracking-tight leading-none mb-6">
+                    ASIA'S LARGEST <br>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-amber-400 animate-pulse-glow">
+                        TECH FESTIVAL
+                    </span>
+                </h1>
+
+                <!-- Dynamic Scramble Subtitle -->
+                <p id="scramble-text" class="text-lg sm:text-2xl text-cyan-200/80 max-w-3xl mx-auto mb-10 font-mono h-12 flex items-center justify-center">
+                    ARCHITECTING FUTURE HORIZONS THROUGH QUANTUM INNOVATION
+                </p>
+
+                <!-- Live Countdown Timer to Techfest 2026 -->
+                <div class="mb-12 max-w-2xl mx-auto p-6 rounded-2xl border border-cyan-500/30 bg-slate-950/70 backdrop-blur-md">
+                    <div class="text-xs font-mono text-cyan-400 tracking-widest mb-4 uppercase flex items-center justify-center gap-2">
+                        <i data-lucide="clock" class="w-4 h-4"></i> EVENT COUNTDOWN MATRIX
+                    </div>
+                    <div class="grid grid-cols-4 gap-4 font-orbitron">
+                        <div class="p-3 bg-slate-900/90 rounded-xl border border-cyan-500/20">
+                            <div id="cd-days" class="text-2xl sm:text-4xl font-black text-cyan-400">00</div>
+                            <div class="text-[10px] font-mono text-gray-400 mt-1 uppercase">DAYS</div>
+                        </div>
+                        <div class="p-3 bg-slate-900/90 rounded-xl border border-fuchsia-500/20">
+                            <div id="cd-hours" class="text-2xl sm:text-4xl font-black text-fuchsia-400">00</div>
+                            <div class="text-[10px] font-mono text-gray-400 mt-1 uppercase">HOURS</div>
+                        </div>
+                        <div class="p-3 bg-slate-900/90 rounded-xl border border-amber-500/20">
+                            <div id="cd-mins" class="text-2xl sm:text-4xl font-black text-amber-400">00</div>
+                            <div class="text-[10px] font-mono text-gray-400 mt-1 uppercase">MINS</div>
+                        </div>
+                        <div class="p-3 bg-slate-900/90 rounded-xl border border-emerald-500/20">
+                            <div id="cd-secs" class="text-2xl sm:text-4xl font-black text-emerald-400">00</div>
+                            <div class="text-[10px] font-mono text-gray-400 mt-1 uppercase">SECS</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-wrap items-center justify-center gap-5">
+                    <a href="#competitions" onclick="playSound('click')" class="px-8 py-4 rounded-xl font-mono text-sm font-bold text-black bg-cyan-400 hover:bg-cyan-300 shadow-[0_0_30px_rgba(0,243,255,0.6)] transition-all flex items-center gap-2">
+                        <i data-lucide="trophy" class="w-4 h-4"></i> EXPLORE COMPETITIONS
+                    </a>
+                    <a href="#terminal-section" onclick="playSound('click')" class="px-8 py-4 rounded-xl font-mono text-sm font-semibold text-cyan-300 border border-cyan-500/40 bg-slate-900/80 hover:border-cyan-400 transition-all flex items-center gap-2">
+                        <i data-lucide="terminal" class="w-4 h-4"></i> LAUNCH TERMINAL
+                    </a>
+                </div>
+
+                <!-- Stats Bar -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 max-w-4xl mx-auto">
+                    <div class="holo-card p-5 rounded-2xl text-center">
+                        <div class="text-3xl sm:text-4xl font-black font-orbitron text-cyan-400">175,000+</div>
+                        <div class="text-xs font-mono text-gray-400 mt-1 uppercase">TOTAL FOOTFALL</div>
+                    </div>
+                    <div class="holo-card p-5 rounded-2xl text-center">
+                        <div class="text-3xl sm:text-4xl font-black font-orbitron text-fuchsia-400">₹60,00,000+</div>
+                        <div class="text-xs font-mono text-gray-400 mt-1 uppercase">PRIZE POOL</div>
+                    </div>
+                    <div class="holo-card p-5 rounded-2xl text-center">
+                        <div class="text-3xl sm:text-4xl font-black font-orbitron text-amber-400">2,500+</div>
+                        <div class="text-xs font-mono text-gray-400 mt-1 uppercase">COLLEGES</div>
+                    </div>
+                    <div class="holo-card p-5 rounded-2xl text-center">
+                        <div class="text-3xl sm:text-4xl font-black font-orbitron text-emerald-400">75+</div>
+                        <div class="text-xs font-mono text-gray-400 mt-1 uppercase">COUNTRIES</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE CYBER TERMINAL CONSOLE -->
+        <section id="terminal-section" class="py-20 px-6 relative">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                        <span class="text-xs font-mono text-cyan-400 ml-2">techfest_shell_v3.0.exe</span>
+                    </div>
+                    <span class="text-xs font-mono text-gray-500">TYPE 'help' FOR COMMANDS</span>
+                </div>
+
+                <div class="rounded-2xl border border-cyan-500/40 bg-slate-950/90 p-6 font-mono text-sm text-cyan-300 shadow-[0_0_40px_rgba(0,243,255,0.15)] h-80 overflow-y-auto flex flex-col justify-between" id="terminal-box">
+                    <div id="terminal-output" class="space-y-2">
+                        <div class="text-gray-400">> TECHFEST IIT BOMBAY INTERACTIVE TERMINAL [ONLINE]</div>
+                        <div class="text-emerald-400">> System status: Nominal. Type 'help' to inspect festival directives.</div>
+                    </div>
+                    <div class="flex items-center gap-2 mt-4 pt-3 border-t border-slate-800">
+                        <span class="text-fuchsia-400 font-bold">user@techfest:~$</span>
+                        <input type="text" id="terminal-input" placeholder="type command here..." class="bg-transparent border-none outline-none text-cyan-300 font-mono w-full focus:ring-0">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPETITIONS HUB SECTION -->
+        <section id="competitions" class="py-24 px-6 relative border-t border-cyan-500/10">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-xs font-mono text-cyan-400 tracking-widest uppercase">[ FLAGSHIP ARENA ]</span>
+                    <h2 class="font-orbitron text-4xl sm:text-6xl font-black mt-2">GLOBAL COMPETITIONS</h2>
+                    <p class="text-gray-400 text-sm mt-4 font-mono">
+                        Compete against the brightest minds across International Robowars, AI Development, and Aeromodelling.
+                    </p>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12">
+                    <button onclick="filterEvents('all')" class="comp-filter-btn px-5 py-2.5 rounded-xl font-mono text-xs font-bold border border-cyan-400 bg-cyan-400 text-black transition-all" data-filter="all">ALL ARENAS</button>
+                    <button onclick="filterEvents('robowars')" class="comp-filter-btn px-5 py-2.5 rounded-xl font-mono text-xs border border-slate-800 text-gray-300 hover:border-cyan-400 transition-all" data-filter="robowars">ROBOWARS</button>
+                    <button onclick="filterEvents('ai')" class="comp-filter-btn px-5 py-2.5 rounded-xl font-mono text-xs border border-slate-800 text-gray-300 hover:border-cyan-400 transition-all" data-filter="ai">AI & CODING</button>
+                    <button onclick="filterEvents('aero')" class="comp-filter-btn px-5 py-2.5 rounded-xl font-mono text-xs border border-slate-800 text-gray-300 hover:border-cyan-400 transition-all" data-filter="aero">AEROMODELLING</button>
+                </div>
+
+                <!-- Competitions Grid with Tilt Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Card 1 -->
+                    <div class="holo-card p-6 rounded-2xl flex flex-col justify-between comp-card" data-category="robowars">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-rose-500/20 text-rose-400 border border-rose-500/30">ROBOTICS COMBAT</span>
+                                <span class="text-xs font-mono text-amber-400 font-bold">PRIZE: ₹15,00,000</span>
+                            </div>
+                            <h3 class="font-orbitron text-2xl font-bold mb-3">International Robowars</h3>
+                            <p class="text-gray-400 text-xs leading-relaxed font-mono mb-6">
+                                Heavyweight 60kg and 15kg combat bot battle arena featuring international combat teams, pneumatic flippers, and spinner weapons.
+                            </p>
+                        </div>
+                        <button onclick="openPassModal('Robowars Registration')" class="w-full py-3 rounded-xl font-mono text-xs font-bold text-cyan-300 border border-cyan-500/40 bg-cyan-500/10 hover:bg-cyan-400 hover:text-black transition-all">
+                            REGISTER TEAM
+                        </button>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="holo-card p-6 rounded-2xl flex flex-col justify-between comp-card" data-category="ai">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30">AI & AGENTS</span>
+                                <span class="text-xs font-mono text-amber-400 font-bold">PRIZE: ₹8,00,000</span>
+                            </div>
+                            <h3 class="font-orbitron text-2xl font-bold mb-3">AI Agent Hackathon</h3>
+                            <p class="text-gray-400 text-xs leading-relaxed font-mono mb-6">
+                                36-hour sprint to build autonomous generative AI agents, neural computer vision rigs, and decentralized Web3 tools.
+                            </p>
+                        </div>
+                        <button onclick="openPassModal('AI Hackathon Registration')" class="w-full py-3 rounded-xl font-mono text-xs font-bold text-fuchsia-300 border border-fuchsia-500/40 bg-fuchsia-500/10 hover:bg-fuchsia-400 hover:text-black transition-all">
+                            JOIN HACKATHON
+                        </button>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="holo-card p-6 rounded-2xl flex flex-col justify-between comp-card" data-category="aero">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">AEROSPACE</span>
+                                <span class="text-xs font-mono text-amber-400 font-bold">PRIZE: ₹6,00,000</span>
+                            </div>
+                            <h3 class="font-orbitron text-2xl font-bold mb-3">Boeing AeroX Challenge</h3>
+                            <p class="text-gray-400 text-xs leading-relaxed font-mono mb-6">
+                                Design, fabricate, and pilot custom RC fixed-wing aircraft through complex payload obstacle drop courses.
+                            </p>
+                        </div>
+                        <button onclick="openPassModal('Boeing AeroX Registration')" class="w-full py-3 rounded-xl font-mono text-xs font-bold text-emerald-300 border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-400 hover:text-black transition-all">
+                            REGISTER AIRCRAFT
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- KEYNOTE SPEAKERS GALLERY -->
+        <section id="speakers" class="py-24 px-6 relative border-t border-cyan-500/10">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+                    <div>
+                        <span class="text-xs font-mono text-cyan-400 tracking-widest uppercase">[ LUMINARY TALKS ]</span>
+                        <h2 class="font-orbitron text-4xl sm:text-6xl font-black mt-2">KEYNOTE LECTURES</h2>
+                    </div>
+                    <span class="text-xs font-mono text-gray-400 mt-4 md:mt-0">HISTORIC & DISTINGUISHED SPEAKERS</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <div class="holo-card p-6 rounded-2xl border-slate-800 hover:border-cyan-400/50">
+                        <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center font-orbitron text-xl font-bold text-cyan-400 mb-4">
+                            DL
+                        </div>
+                        <h4 class="font-orbitron text-xl font-bold">14th Dalai Lama</h4>
+                        <p class="text-xs font-mono text-cyan-400 mb-2">Nobel Peace Laureate</p>
+                        <p class="text-xs text-gray-400 font-mono leading-relaxed">
+                            Shared profound visions on ethics, artificial consciousness, and global unity.
+                        </p>
+                    </div>
+
+                    <div class="holo-card p-6 rounded-2xl border-slate-800 hover:border-fuchsia-400/50">
+                        <div class="w-16 h-16 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-400/30 flex items-center justify-center font-orbitron text-xl font-bold text-fuchsia-400 mb-4">
+                            RS
+                        </div>
+                        <h4 class="font-orbitron text-xl font-bold">Rakesh Sharma</h4>
+                        <p class="text-xs font-mono text-fuchsia-400 mb-2">First Indian in Space</p>
+                        <p class="text-xs text-gray-400 font-mono leading-relaxed">
+                            Delivered inspiring insights on human spaceflight and cosmic exploration.
+                        </p>
+                    </div>
+
+                    <div class="holo-card p-6 rounded-2xl border-slate-800 hover:border-amber-400/50">
+                        <div class="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-400/30 flex items-center justify-center font-orbitron text-xl font-bold text-amber-400 mb-4">
+                            SS
+                        </div>
+                        <h4 class="font-orbitron text-xl font-bold">S. Somanath</h4>
+                        <p class="text-xs font-mono text-amber-400 mb-2">Former Chairman, ISRO</p>
+                        <p class="text-xs text-gray-400 font-mono leading-relaxed">
+                            Address on Chandrayaan missions and deep space telemetry architectures.
+                        </p>
+                    </div>
+
+                    <div class="holo-card p-6 rounded-2xl border-slate-800 hover:border-emerald-400/50">
+                        <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-400/30 flex items-center justify-center font-orbitron text-xl font-bold text-emerald-400 mb-4">
+                            KW
+                        </div>
+                        <h4 class="font-orbitron text-xl font-bold">Kurt Wüthrich</h4>
+                        <p class="text-xs font-mono text-emerald-400 mb-2">Nobel Laureate Chemistry</p>
+                        <p class="text-xs text-gray-400 font-mono leading-relaxed">
+                            Keynote speech on macromolecular NMR spectroscopy and molecular dynamics.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- FESTIVAL SCHEDULE MATRIX -->
+        <section id="schedule" class="py-24 px-6 relative border-t border-cyan-500/10">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-xs font-mono text-cyan-400 tracking-widest uppercase">[ SCHEDULE MATRIX ]</span>
+                    <h2 class="font-orbitron text-4xl sm:text-6xl font-black mt-2">FESTIVAL TIMELINE</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="holo-card p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <span class="text-xs font-mono font-bold text-cyan-400">DAY 01 • DECEMBER 16, 2026</span>
+                            <h3 class="font-orbitron text-xl font-bold mt-1">Inauguration & Robowars Qualifiers</h3>
+                            <p class="text-xs font-mono text-gray-400 mt-1">Convocation Hall & Gymkhana Combat Arena</p>
+                        </div>
+                        <span class="px-4 py-2 rounded-xl bg-cyan-500/10 text-cyan-300 font-mono text-xs border border-cyan-500/30">09:00 AM IST</span>
+                    </div>
+
+                    <div class="holo-card p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <span class="text-xs font-mono font-bold text-fuchsia-400">DAY 02 • DECEMBER 17, 2026</span>
+                            <h3 class="font-orbitron text-xl font-bold mt-1">Keynote Lectures & Drone Racing Arena</h3>
+                            <p class="text-xs font-mono text-gray-400 mt-1">IIT BOMBAY Main Auditorium & Indoor Stadium</p>
+                        </div>
+                        <span class="px-4 py-2 rounded-xl bg-fuchsia-500/10 text-fuchsia-300 font-mono text-xs border border-fuchsia-500/30">10:00 AM IST</span>
+                    </div>
+
+                    <div class="holo-card p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <span class="text-xs font-mono font-bold text-emerald-400">DAY 03 • DECEMBER 18, 2026</span>
+                            <h3 class="font-orbitron text-xl font-bold mt-1">Robowars Grand Finals & Technoholix Night</h3>
+                            <p class="text-xs font-mono text-gray-400 mt-1">Open Air Theatre (OAT) & Main Grounds</p>
+                        </div>
+                        <span class="px-4 py-2 rounded-xl bg-emerald-500/10 text-emerald-300 font-mono text-xs border border-emerald-500/30">06:00 PM IST</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIP PASS GENERATOR MODAL -->
+        <div id="pass-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="holo-card w-full max-w-lg p-8 rounded-2xl relative border border-cyan-500/50 shadow-[0_0_50px_rgba(0,243,255,0.3)] transform scale-95 transition-transform duration-300" id="pass-box">
+                <button onclick="closePassModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+                <span class="text-xs font-mono text-cyan-400 tracking-widest uppercase">[ REGISTRATION PORTAL ]</span>
+                <h3 class="font-orbitron text-2xl font-bold mt-1 mb-2" id="pass-title">GENERATE VIP ACCESS PASS</h3>
+                <p class="text-xs font-mono text-gray-400 mb-6">Enter your details to generate an official Techfest 2026 Cyber Pass.</p>
+
+                <form onsubmit="generatePass(event)" class="space-y-4 font-mono text-xs">
+                    <div>
+                        <label class="block text-gray-400 mb-1">FULL NAME</label>
+                        <input type="text" id="pass-name" required placeholder="e.g. Alex Mercer" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-1">EMAIL ADDRESS</label>
+                        <input type="email" id="pass-email" required placeholder="alex@university.edu" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-1">COLLEGE / INSTITUTION</label>
+                        <input type="text" id="pass-college" required placeholder="IIT Bombay / University" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <button type="submit" class="w-full py-4 rounded-xl font-bold text-black bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-amber-400 hover:opacity-90 transition-all font-orbitron uppercase tracking-wider">
+                        GENERATE DIGITAL PASS
+                    </button>
+                </form>
+
+                <!-- Generated Ticket Preview -->
+                <div id="pass-result" class="hidden mt-6 p-6 rounded-xl border border-cyan-400/50 bg-slate-950 relative overflow-hidden">
+                    <div class="flex justify-between items-start border-b border-cyan-500/30 pb-4 mb-4">
+                        <div>
+                            <span class="font-orbitron font-bold text-cyan-400 text-lg">TECHFEST 2026</span>
+                            <span class="block text-[10px] font-mono text-gray-400">IIT BOMBAY OFFICIAL PASS</span>
+                        </div>
+                        <span class="px-2 py-1 bg-cyan-400/20 text-cyan-300 font-mono text-[10px] rounded border border-cyan-400/40">VIP ACCESS</span>
+                    </div>
+                    <div class="space-y-1 font-mono text-xs">
+                        <div><span class="text-gray-500">NAME:</span> <span id="res-name" class="text-white font-bold"></span></div>
+                        <div><span class="text-gray-500">COLLEGE:</span> <span id="res-college" class="text-gray-300"></span></div>
+                        <div><span class="text-gray-500">PASS ID:</span> <span id="res-id" class="text-fuchsia-400 font-bold"></span></div>
+                    </div>
+                    <!-- Barcode Visual -->
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
+                        <div class="h-6 w-32 bg-gradient-to-r from-white via-transparent to-white opacity-80 font-mono text-[8px] flex items-center justify-center tracking-widest text-black">||| | |||| | ||</div>
+                        <span class="text-[9px] font-mono text-cyan-400">VERIFIED ENTRY</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="py-12 px-6 border-t border-slate-800 bg-slate-950 font-mono text-xs text-gray-500">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-cyan-400 font-bold font-orbitron">TECHFEST IIT BOMBAY</span>
+                    <span>•</span>
+                    <span>30th EDITION</span>
+                </div>
+                <div>Official Portal: <a href="https://techfest.org" target="_blank" class="text-cyan-400 hover:underline">techfest.org</a></div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        /* ============================================================
+           1. WEB AUDIO API SYNTHESIZER (Sci-Fi SFX)
+           ============================================================ */
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(200, now + 0.1);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'hover') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(600, now + 0.05);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'terminal') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(1200, now);
+                gain.gain.setValueAtTime(0.03, now);
+                gain.gain.linearRampToValueAtTime(0.001, now + 0.03);
+                osc.start(now);
+                osc.stop(now + 0.03);
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const status = document.getElementById('sound-status');
+            const icon = document.getElementById('sound-icon');
+            if (soundEnabled) {
+                status.innerText = 'SFX: ON';
+                icon.setAttribute('data-lucide', 'volume-2');
+            } else {
+                status.innerText = 'SFX: OFF';
+                icon.setAttribute('data-lucide', 'volume-x');
+            }
+            lucide.createIcons();
+            playSound('click');
+        }
+
+        /* ============================================================
+           2. DYNAMIC CURSOR
+           ============================================================ */
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX, ringY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        function renderCursor() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            cursorRing.style.left = `${ringX}px`;
+            cursorRing.style.top = `${ringY}px`;
+            requestAnimationFrame(renderCursor);
+        }
+        renderCursor();
+
+        /* ============================================================
+           3. CANVAS PARTICLE CONSTELLATION & MATRIX RAIN ENGINE
+           ============================================================ */
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let matrixActive = false;
+        let matrixDrops = [];
+        const matrixChars = '01TECHFEST2026IITBOMBAY';
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Initialize matrix drops
+            const columns = Math.floor(canvas.width / 20);
+            matrixDrops = Array(columns).fill(1);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.radius = Math.random() * 1.5 + 0.5;
+                this.color = Math.random() > 0.5 ? '#00f3ff' : '#ff0055';
+            }
+            update() {
+                // Magnetic cursor attraction
+                const dx = mouseX - this.x;
+                const dy = mouseY - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    this.x += (dx / dist) * 1.2;
+                    this.y += (dy / dist) * 1.2;
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 90; i++) { particles.push(new Particle()); }
+
+        function toggleMatrixRain() {
+            matrixActive = !matrixActive;
+            playSound('click');
+        }
+
+        function renderCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Matrix Rain Layer
+            if (matrixActive) {
+                ctx.fillStyle = 'rgba(3, 7, 18, 0.15)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00f3ff';
+                ctx.font = '14px JetBrains Mono, monospace';
+
+                for (let i = 0; i < matrixDrops.length; i++) {
+                    const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                    ctx.fillText(text, i * 20, matrixDrops[i] * 20);
+                    if (matrixDrops[i] * 20 > canvas.height && Math.random() > 0.975) {
+                        matrixDrops[i] = 0;
+                    }
+                    matrixDrops[i]++;
+                }
+            }
+
+            // Particles Constellation Layer
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+
+                // Draw connecting lines
+                for (let j = index + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 100) {
+                        ctx.strokeStyle = `rgba(0, 243, 255, ${1 - dist / 100})`;
+                        ctx.lineWidth = 0.4;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+
+            requestAnimationFrame(renderCanvas);
+        }
+        renderCanvas();
+
+       
+
+        /* ============================================================
+           5. COUNTDOWN TIMER TO TECHFEST 2026
+           ============================================================ */
+        const targetDate = new Date('December 16, 2026 09:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+                document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('cd-mins').innerText = String(mins).padStart(2, '0');
+                document.getElementById('cd-secs').innerText = String(secs).padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        /* ============================================================
+           6. INTERACTIVE TERMINAL SHELL
+           ============================================================ */
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalOutput = document.getElementById('terminal-output');
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = terminalInput.value.trim().toLowerCase();
+                playSound('terminal');
+                processCommand(cmd);
+                terminalInput.value = '';
+            }
+        });
+
+        function processCommand(cmd) {
+            appendTerminal(`user@techfest:~$ ${cmd}`, 'text-fuchsia-400 font-bold');
+
+            if (cmd === 'help') {
+                appendTerminal('> Available Directives:', 'text-cyan-400');
+                appendTerminal('  - events    : List flagship competitions');
+                appendTerminal('  - prizes    : Display total prize pool stats');
+                appendTerminal('  - speakers  : View keynote lecture luminaries');
+                appendTerminal('  - register  : Open VIP access pass generator');
+                appendTerminal('  - matrix    : Toggle digital rain background');
+                appendTerminal('  - clear     : Flush terminal screen');
+            } else if (cmd === 'events') {
+                appendTerminal('> Flagship Arenas: [1] Robowars (₹15L) | [2] AI Hackathon (₹8L) | [3] Boeing AeroX (₹6L)', 'text-emerald-400');
+            } else if (cmd === 'prizes') {
+                appendTerminal('> Total Festival Prize Pool: ₹60,00,000+ INR across 30+ challenges.', 'text-amber-400');
+            } else if (cmd === 'speakers') {
+                appendTerminal('> Keynotes: 14th Dalai Lama, Rakesh Sharma, S. Somanath, Kurt Wüthrich.', 'text-purple-400');
+            } else if (cmd === 'register') {
+                openPassModal('Terminal Registration');
+                appendTerminal('> Initialized Registration Modal...', 'text-cyan-400');
+            } else if (cmd === 'matrix') {
+                toggleMatrixRain();
+                appendTerminal('> Matrix Rain Effect Toggled.', 'text-cyan-400');
+            } else if (cmd === 'clear') {
+                terminalOutput.innerHTML = '';
+            } else {
+                appendTerminal(`> Command '${cmd}' unrecognized. Type 'help' for options.`, 'text-rose-400');
+            }
+
+            const box = document.getElementById('terminal-box');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function appendTerminal(text, className = 'text-gray-300') {
+            const div = document.createElement('div');
+            div.className = className;
+            div.innerText = text;
+            terminalOutput.appendChild(div);
+        }
+
+        /* ============================================================
+           7. COMPETITIONS FILTER & TILT CARDS
+           ============================================================ */
+        function filterEvents(category) {
+            playSound('click');
+            const btns = document.querySelectorAll('.comp-filter-btn');
+            const cards = document.querySelectorAll('.comp-card');
+
+            btns.forEach(btn => {
+                if (btn.getAttribute('data-filter') === category) {
+                    btn.classList.add('bg-cyan-400', 'text-black', 'font-bold');
+                    btn.classList.remove('text-gray-300', 'border-slate-800');
+                } else {
+                    btn.classList.remove('bg-cyan-400', 'text-black', 'font-bold');
+                    btn.classList.add('text-gray-300', 'border-slate-800');
+                }
+            });
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Parallax 3D Tilt Effect on Cards
+        document.querySelectorAll('.holo-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+            });
+        });
+
+        /* ============================================================
+           8. PASS GENERATOR MODAL CONTROLS
+           ============================================================ */
+        const passModal = document.getElementById('pass-modal');
+        const passBox = document.getElementById('pass-box');
+
+        function openPassModal(title = 'GENERATE VIP ACCESS PASS') {
+            playSound('click');
+            document.getElementById('pass-title').innerText = title;
+            passModal.classList.remove('opacity-0', 'pointer-events-none');
+            passBox.classList.remove('scale-95');
+            passBox.classList.add('scale-100');
+        }
+
+        function closePassModal() {
+            playSound('click');
+            passModal.classList.add('opacity-0', 'pointer-events-none');
+            passBox.classList.remove('scale-100');
+            passBox.classList.add('scale-95');
+        }
+
+        function generatePass(e) {
+            e.preventDefault();
+            playSound('click');
+
+            const name = document.getElementById('pass-name').value;
+            const college = document.getElementById('pass-college').value;
+            const passId = 'TF26-' + Math.floor(100000 + Math.random() * 900000);
+
+            document.getElementById('res-name').innerText = name;
+            document.getElementById('res-college').innerText = college;
+            document.getElementById('res-id').innerText = passId;
+
+            document.getElementById('pass-result').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
